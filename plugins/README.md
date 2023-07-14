@@ -19,7 +19,7 @@ In order to have an organized code, i've created this utilities to make it easie
 
 ## Packcages
 
-- `@wave-dev/plugins` ([source](./plugins/)) Useful plugins for development.
+- `@wave-dev/plugins` ([source](./plugins/README.md)) Useful plugins for development.
 
 ## Instalation
 
