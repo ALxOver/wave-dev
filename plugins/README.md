@@ -12,7 +12,24 @@
 	</p>
 </div>
 
-# List of available plugins
+## About
+
+Wave is a **Discord Bot** which is being developed by me, Brayan Kook.
+In order to have an organized code, i've created this utilities to make it easier and decided to make it public so anyone can use them.
+
+## Packcages
+
+- `@wave-dev/plugins` ([source](./plugins/)) Useful plugins for development.
+
+## Instalation
+
+Node.js 16.9.0 or newer is required.
+
+```
+npm install @wave-dev/plugins
+```
+
+## List of available plugins
 
 - **[KVString](/typings/classes/KVString.d.ts)** allows you to store data by **(key:value)** pairs in a single string and format it interpreting it as different data types as well.
   This was powered by **Discord Bot Development**.
