@@ -11,3 +11,4 @@ All package changes will be documented in this file.
 ### [Fixed](https://github.com/ALxOver/wave-dev/commit/32274927c5146d693ef73baedf29da64ead35b9e)
 
 - Fixed the documentation github contributors banner link.
+- Fixed the documentation image.

@@ -1,7 +1,7 @@
 <div align="center">
 	<br />
 	<p>
-		<img src="../resources//images/wave-background.png" width="280" alt="Wave background" />
+		<img src="https://raw.githubusercontent.com/ALxOver/wave-dev/main/resources/images/wave-background.png" width="280" alt="Wave background" />
 	</p>
 	<br />
 	<p>
