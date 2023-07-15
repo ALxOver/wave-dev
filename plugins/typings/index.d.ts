@@ -13,7 +13,7 @@ export interface KVStringData {
 export interface BaseDocumentData {
     id: string;
 }
-export interface Document<Data extends {} & BaseDocumentData> {
+export interface Document<Data extends {}> {
     readonly model: JSONStorage<Data>;
     readonly save: () => void;
     readonly toJSON: () => Data;

@@ -4,15 +4,21 @@ All package changes will be documented in this file.
 
 ## [@wave-dev/plugins](https://www.npmjs.com/package/@wave-dev/plugins) (14/07/2023)
 
-### [Updated](https://github.com/ALxOver/wave-dev/commit/3b8b16915a5369b5136b310900cf4c8865b81588)
+### Updated
 
 - Updated plugins documentation.
 
-### [Fixed](https://github.com/ALxOver/wave-dev/commit/32274927c5146d693ef73baedf29da64ead35b9e)
+### Fixed
 
 - Fixed the documentation image.
 - Fixed the documentation banners links.
 
-### [Fixed](https://github.com/ALxOver/wave-dev/commit/9b27882778b51dff385730bfb0612e3eddf3008c)
+### Fixed
 
 - Fixed the github link
+
+## [@wave-dev/plugins](https://www.npmjs.com/package/@wave-dev/plugins) (16/07/2023)
+
+### Updated
+
+- Updated the [JSONStorage#create](/plugins/typings/classes/JSONStorage.d.ts).

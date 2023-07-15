@@ -8,8 +8,8 @@ const forceWriteFile_1 = require("../functions/forceWriteFile");
 const KVString_1 = require("./KVString");
 const encode_1 = require("../functions/encode");
 const path_1 = require("path");
-function buildDocument(data, model) {
-    const doc = { ...data, model };
+function buildDocument(id, data, model) {
+    const doc = { id, ...data, model };
     Object.defineProperties(doc, {
         "toJSON": {
             value: () => (0, encode_1.encode)(doc, { allowedTypes: ["number", "object", "boolean", "string"], skipKeys: ["model"] })
@@ -39,8 +39,8 @@ function buildDocument(data, model) {
 class JSONStorage {
     constructor(path) {
         this.path = path;
-        this[Cache] = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc, this)]));
-        this.collection = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc, this)]));
+        this[Cache] = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc.id, doc, this)]));
+        this.collection = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc.id, doc, this)]));
         ;
     }
     /**
@@ -66,7 +66,8 @@ class JSONStorage {
     }
     /**
      * Create a document
-     * @param data The document data.
+     * @param {string} id The document id.
+     * @param {Data} data The document data.
      * @returns {Data & Document<Data>}
      * @example
      * ```ts
@@ -93,35 +94,43 @@ class JSONStorage {
      * console.log(Fruits.getById("12345678912345678", true)) // { id: "12345678912345678", name: "Lemon", amount: 3 }
      * ```
      */
-    create(data) {
-        const doc = this[Cache].get(data.id);
+    create(id, data) {
+        const doc = this[Cache].get(id);
         if (doc) {
             doc.updatedAt = new Date(Date.now());
-            this[Cache].set(doc.id, buildDocument(doc, this));
+            this[Cache].set(id, buildDocument(id, doc, this));
         }
         else {
-            this[Cache].set(data.id, buildDocument({ ...data, createdAt: new Date(Date.now()), updatedAt: new Date(Date.now()) }, this));
+            this[Cache].set(id, buildDocument(id, { ...data, createdAt: new Date(Date.now()), updatedAt: new Date(Date.now()) }, this));
         }
         (0, forceWriteFile_1.forceWriteFileSync)(this.path, KVString_1.KVString.toString(this.toJSON()));
-        return this[Cache].get(data.id);
+        return this[Cache].get(id);
     }
+    ;
     /**
-     * Update a document.
+     * Update a document by its id.
      * @param {string} id The document id to update.
      * @param {Data} data The new document data.
      * @returns {Data & Document<Data>}
      */
-    update(id, data) {
-        this[Cache].set(id, buildDocument({ ...data, id }, this));
+    updateById(id, data) {
+        this[Cache].set(id, buildDocument(id, { ...data, id }, this));
         (0, forceWriteFile_1.forceWriteFileSync)(this.path, KVString_1.KVString.toString(this.toJSON()));
         return this[Cache].get(id);
+    }
+    ;
+    /**
+     * Update the JSON file with the current collection data.
+     */
+    update() {
+        (0, forceWriteFile_1.forceWriteFileSync)(this.path, JSON.stringify(this.collection.toJSON()));
     }
     /**
      * Save a document.
      * @param {Data & Document<Data>}data
      */
     save(data) {
-        this.create(data);
+        this.create(data.id, data);
     }
     /**
      * Get the collection as an array of documents parsed in JSON.

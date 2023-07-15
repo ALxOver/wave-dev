@@ -1,7 +1,7 @@
 declare const Cache: unique symbol;
 import { Collection } from "@discordjs/collection";
 import { BaseDocumentData, Document } from "..";
-export declare class JSONStorage<Data extends BaseDocumentData> {
+export declare class JSONStorage<Data extends {}> {
     /**
      * The JSONStorage path.
      */
@@ -35,7 +35,8 @@ export declare class JSONStorage<Data extends BaseDocumentData> {
     delete(id: string): boolean;
     /**
      * Create a document
-     * @param data The document data.
+     * @param {string} id The document id.
+     * @param {Data} data The document data.
      * @returns {Data & Document<Data>}
      * @example
      * ```ts
@@ -62,19 +63,23 @@ export declare class JSONStorage<Data extends BaseDocumentData> {
      * console.log(Fruits.getById("12345678912345678", true)) // { id: "12345678912345678", name: "Lemon", amount: 3 }
      * ```
      */
-    create(data: Data & BaseDocumentData): Data & Document<Data>;
+    create(id: string, data: Data): Data & Document<Data>;
     /**
-     * Update a document.
+     * Update a document by its id.
      * @param {string} id The document id to update.
      * @param {Data} data The new document data.
      * @returns {Data & Document<Data>}
      */
-    update(id: string, data: Data): Data & Document<Data>;
+    updateById(id: string, data: Data): Data & Document<Data>;
+    /**
+     * Update the JSON file with the current collection data.
+     */
+    update(): void;
     /**
      * Save a document.
      * @param {Data & Document<Data>}data
      */
-    save(data: Data & Document<Data>): void;
+    save(data: Data & Document<Data> & BaseDocumentData): void;
     /**
      * Get the collection as an array of documents parsed in JSON.
      * @returns {Data[]}
