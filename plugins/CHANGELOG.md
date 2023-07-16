@@ -22,3 +22,7 @@ All package changes will be documented in this file.
 ### Updated
 
 - Updated the [JSONStorage#create](/plugins/typings/classes/JSONStorage.d.ts).
+
+### Fixed
+
+- Fixed the [JSONStorage#create](/plugins/typings/classes/JSONStorage.d.ts) method documentation.
