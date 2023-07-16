@@ -7,8 +7,8 @@
 	<p>
 		<a href="https://github.com/ALxOver/wave-dev/tree/main"><img src="https://img.shields.io/badge/Repository-black?style=flat&logo=github&link=https%3A%2F%2Fgithub.com%2FALxOver%2Fwave-dev%2Ftree%2Fmain" alt="npm package" /></a>
 		<a href="https://github.com/ALxOver/wave-dev/tree/main"><img src="https://img.shields.io/github/contributors/ALxOver/wave-dev?logo=github&label=Contributors&color=black" alt="Github contributors" /></a>
-		<a href="https://www.npmjs.com/package/@wave-dev/plugins"><img src="https://img.shields.io/npm/v/%40wave-dev/plugins?logo=npm" alt="NPM version" /></a>
-		<a href="https://www.npmjs.com/package/@wave-dev/plugins"><img src="https://img.shields.io/npm/l/%40wave-dev%2Fplugins?logo=npm" alt="License" /></a>
+		<a href="https://www.npmjs.com/package/@wave-dev/plugins"><img src="https://img.shields.io/npm/v/%40wave-dev/plugins" alt="NPM version" /></a>
+		<a href="https://www.npmjs.com/package/@wave-dev/plugins"><img src="https://img.shields.io/npm/l/%40wave-dev%2Fplugins" alt="License" /></a>
 	</p>
 </div>
 
