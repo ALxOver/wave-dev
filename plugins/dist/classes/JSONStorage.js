@@ -6,13 +6,17 @@ const Cache = Symbol("Cache");
 const collection_1 = require("@discordjs/collection");
 const forceWriteFile_1 = require("../functions/forceWriteFile");
 const KVString_1 = require("./KVString");
+const __1 = require("..");
 const encode_1 = require("../functions/encode");
 const path_1 = require("path");
+const node_events_1 = require("node:events");
 function buildDocument(id, data, model) {
-    const doc = { id, ...data, model };
+    const doc = typeof data === "object" ?
+        { id, ...data, model, updatedAtTimestamp: Date.now() }
+        : { id, value: data, model, updatedAtTimestamp: Date.now() };
     Object.defineProperties(doc, {
         "toJSON": {
-            value: () => (0, encode_1.encode)(doc, { allowedTypes: ["number", "object", "boolean", "string"], skipKeys: ["model"] })
+            value: () => typeof data === "object" ? ((0, __1.omit)((0, encode_1.encode)(doc, ["boolean", "number", "object", "string"]), ["model"])) : { id, value: data }
         },
         "save": {
             value: () => doc.model.save(doc)
@@ -23,12 +27,14 @@ function buildDocument(id, data, model) {
     });
     Object.preventExtensions(doc);
     const document = new Proxy(doc, {
-        defineProperty(_target, property, _attributes) {
-            if (["updatedAt", "createdAt"].includes(property)) {
+        defineProperty(target, property, attributes) {
+            if (["updatedAtTimestamp", "updatedAtTimestamp", "id"].includes(property)) {
                 throw new TypeError(`Cannot manually set or change the value of ${property}`);
             }
-            else
+            else {
+                Object.defineProperty(target, property, attributes);
                 return true;
+            }
         },
         deleteProperty() {
             throw new TypeError(`Cannot delete properties from the object`);
@@ -36,12 +42,12 @@ function buildDocument(id, data, model) {
     });
     return document;
 }
-class JSONStorage {
+class JSONStorage extends node_events_1.EventEmitter {
     constructor(path) {
+        super();
         this.path = path;
         this[Cache] = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc.id, doc, this)]));
         this.collection = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc.id, doc, this)]));
-        ;
     }
     /**
      * Get a document by its id.
@@ -68,14 +74,14 @@ class JSONStorage {
      * Create a document
      * @param {string} id The document id.
      * @param {Data} data The document data.
-     * @returns {Data & Document<Data>}
+     * @returns {DocType<Data>}
      * @example
      * ```ts
      * // fruits.ts
-     * import { JSONStorage, BaseDocumentData } from "kvstring";
+     * import { JSONStorage } from "kvstring";
      * import { join } from "path";
      * // Create an interface for the document data:
-     * interface FruitData extends BaseDocumentData {
+     * interface FruitData {
      *  name: string;
      *  amount: number;
      * }
@@ -84,7 +90,7 @@ class JSONStorage {
      * const Fruits = JSONStorage.store<FruitData>(path)
      *
      * // Create the first document:
-     * Fruits.create({ id: "12345678912345678", name: "Apple", amount: 1 });
+     * Fruits.create("12345678912345678", { name: "Apple", amount: 1 });
      * // Get the document by its id:
      * const fruit = Fruits.getById("12345678912345678", true)
      * // Modify and save the document:
@@ -97,13 +103,13 @@ class JSONStorage {
     create(id, data) {
         const doc = this[Cache].get(id);
         if (doc) {
-            doc.updatedAt = new Date(Date.now());
             this[Cache].set(id, buildDocument(id, doc, this));
         }
         else {
-            this[Cache].set(id, buildDocument(id, { ...data, createdAt: new Date(Date.now()), updatedAt: new Date(Date.now()) }, this));
+            this[Cache].set(id, buildDocument(id, typeof data === "object" ? { ...data, createdAtTimestamp: Date.now(), updatedAtTimestamp: Date.now() } : { value: data, createdAtTimestamp: Date.now(), updatedAtTimestamp: Date.now() }, this));
         }
         (0, forceWriteFile_1.forceWriteFileSync)(this.path, KVString_1.KVString.toString(this.toJSON()));
+        this.emit("create", this[Cache].get(id), this, id);
         return this[Cache].get(id);
     }
     ;
@@ -111,7 +117,7 @@ class JSONStorage {
      * Update a document by its id.
      * @param {string} id The document id to update.
      * @param {Data} data The new document data.
-     * @returns {Data & Document<Data>}
+     * @returns {Data}
      */
     updateById(id, data) {
         this[Cache].set(id, buildDocument(id, { ...data, id }, this));
@@ -120,17 +126,17 @@ class JSONStorage {
     }
     ;
     /**
-     * Update the JSON file with the current collection data.
+     * Update the JSON file with the specified collection data.
      */
-    update() {
-        (0, forceWriteFile_1.forceWriteFileSync)(this.path, JSON.stringify(this.collection.toJSON()));
+    update(collection) {
+        (0, forceWriteFile_1.forceWriteFileSync)(this.path, JSON.stringify(collection.toJSON()));
     }
     /**
      * Save a document.
-     * @param {Data & Document<Data>}data
+     * @param {DocType<Data>}data
      */
     save(data) {
-        this.create(data.id, data);
+        this.create(data.id, data.toJSON());
     }
     /**
      * Get the collection as an array of documents parsed in JSON.

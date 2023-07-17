@@ -1,6 +1,6 @@
 {
   "name": "@wave-dev/plugins",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "description": "Useful development plugins.",
   "main": "./dist/index.js",
   "typings": "./typings/index.d.ts",
@@ -9,6 +9,7 @@
     "typings"
   ],
   "scripts": {
+    "test": "node ./testing/index.js",
     "build": "tsc",
     "start": "node ./dist/index.js"
   },

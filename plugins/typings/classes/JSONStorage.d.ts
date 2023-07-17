@@ -1,7 +1,9 @@
+/// <reference types="node" />
 declare const Cache: unique symbol;
 import { Collection } from "@discordjs/collection";
-import { BaseDocumentData, Document } from "..";
-export declare class JSONStorage<Data extends {}> {
+import { DocType, Document, JSONStorageEvents } from "..";
+import { EventEmitter } from "node:events";
+export declare class JSONStorage<Data> extends EventEmitter {
     /**
      * The JSONStorage path.
      */
@@ -9,24 +11,27 @@ export declare class JSONStorage<Data extends {}> {
     /**
      * The Private JSONStorage collection.
      */
-    [Cache]: Collection<string, Data & Document<Data>>;
+    [Cache]: Collection<string, DocType<Data>>;
     /**
      * The JSONStorage collection.
      */
-    collection: Collection<string, Data & Document<Data>>;
+    collection: Collection<string, DocType<Data>>;
+    on: <K extends keyof JSONStorageEvents<Data>>(event: K, listener: (...args: JSONStorageEvents<Data>[K]) => void) => this;
+    once: <K extends keyof JSONStorageEvents<Data>>(event: K, listener: (...args: JSONStorageEvents<Data>[K]) => void) => this;
+    emit: <K extends keyof JSONStorageEvents<Data>>(eventName: K, ...args: JSONStorageEvents<Data>[K]) => boolean;
     constructor(path: string);
     /**
      * Get a document by its id and forced to not be undefined.
      * @param {string} id The document id.
      * @param {true} required Forced to not be undefined.
      */
-    getById(id: string, required: true): Data & Document<Data>;
+    getById(id: string, required: true): DocType<Data> & Document<Data>;
     /**
      * Get a document by its id.
      * @param {string} id The document id.
      * @param {boolean} required If true, the return type wont be undefined.
      */
-    getById(id: string, required?: boolean): Data & Document<Data> | undefined;
+    getById(id: string, required?: boolean): DocType<Data> & Document<Data> | undefined;
     /**
      * Delete a document.
      * @param {string} id The document id.
@@ -37,14 +42,14 @@ export declare class JSONStorage<Data extends {}> {
      * Create a document
      * @param {string} id The document id.
      * @param {Data} data The document data.
-     * @returns {Data & Document<Data>}
+     * @returns {DocType<Data>}
      * @example
      * ```ts
      * // fruits.ts
-     * import { JSONStorage, BaseDocumentData } from "kvstring";
+     * import { JSONStorage } from "kvstring";
      * import { join } from "path";
      * // Create an interface for the document data:
-     * interface FruitData extends BaseDocumentData {
+     * interface FruitData {
      *  name: string;
      *  amount: number;
      * }
@@ -53,7 +58,7 @@ export declare class JSONStorage<Data extends {}> {
      * const Fruits = JSONStorage.store<FruitData>(path)
      *
      * // Create the first document:
-     * Fruits.create({ id: "12345678912345678", name: "Apple", amount: 1 });
+     * Fruits.create("12345678912345678", { name: "Apple", amount: 1 });
      * // Get the document by its id:
      * const fruit = Fruits.getById("12345678912345678", true)
      * // Modify and save the document:
@@ -63,23 +68,23 @@ export declare class JSONStorage<Data extends {}> {
      * console.log(Fruits.getById("12345678912345678", true)) // { id: "12345678912345678", name: "Lemon", amount: 3 }
      * ```
      */
-    create(id: string, data: Data): Data & Document<Data>;
+    create(id: string, data: Data): DocType<Data>;
     /**
      * Update a document by its id.
      * @param {string} id The document id to update.
      * @param {Data} data The new document data.
-     * @returns {Data & Document<Data>}
+     * @returns {Data}
      */
-    updateById(id: string, data: Data): Data & Document<Data>;
+    updateById(id: string, data: Data): DocType<Data>;
     /**
-     * Update the JSON file with the current collection data.
+     * Update the JSON file with the specified collection data.
      */
-    update(): void;
+    update(collection: Collection<string, Data>): void;
     /**
      * Save a document.
-     * @param {Data & Document<Data>}data
+     * @param {DocType<Data>}data
      */
-    save(data: Data & Document<Data> & BaseDocumentData): void;
+    save(data: DocType<Data>): void;
     /**
      * Get the collection as an array of documents parsed in JSON.
      * @returns {Data[]}
@@ -92,6 +97,6 @@ export declare class JSONStorage<Data extends {}> {
      * @param path The path where the JSON file will be created.
      * @returns {JSONStorage<Data>}
      */
-    static store<Data extends BaseDocumentData>(path: string): JSONStorage<Data>;
+    static store<Data>(path: string): JSONStorage<Data>;
 }
 export {};

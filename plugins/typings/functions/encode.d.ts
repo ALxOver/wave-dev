@@ -1,20 +1,17 @@
-import { ValidJSONTypes } from "..";
+import { FilterKeyTypes, UnParseJSONTypes, ValidJSONTypes, ParseJSONTypes, ArrayElementsTypes } from "..";
 /**
  * Encode an object into a json format.
- * @template {{}} Data The object type to encode.
- * @template {{}} Result The expected result.
+ * Be aware that an array extends object too.
+ * @template {object} Data The object type to encode.
  * @param data The object to encode.
  * @param options Options for encodation.
  *
  * @example
  * ```ts
- * const person = { name: "Alex", age: 22, developer: true }; // Declare the object.
- * // Get the
- * const personEncoded = encode(person, { allowedTypes: ["string", "number"], skipKeys: ["age"] });
- * console.log(personEncoded); // { name: "Alex" }
+ * // Declare the object.
+ * const person = { name: "Alex", age: 22, developer: true };
+ * const personEncoded = encode(person, ["string", "boolean"]);
+ * console.log(personEncoded); // { name: "Alex" , developer: true }
  * ```
  */
-export declare function encode<Data extends {}, Result extends {}>(data: Data | any, options: {
-    allowedTypes: ValidJSONTypes[];
-    skipKeys?: (keyof typeof data)[];
-}): Readonly<Result>;
+export declare function encode<Data extends object, T extends UnParseJSONTypes<ValidJSONTypes>[]>(data: Data, allowedTypes: T): Readonly<Pick<Data, FilterKeyTypes<Data, ParseJSONTypes<ArrayElementsTypes<typeof allowedTypes>>>>>;
