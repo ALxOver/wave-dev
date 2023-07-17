@@ -106,7 +106,38 @@ class JSONStorage extends node_events_1.EventEmitter {
             this[Cache].set(id, buildDocument(id, doc, this));
         }
         else {
-            this[Cache].set(id, buildDocument(id, typeof data === "object" ? { ...data, createdAtTimestamp: Date.now(), updatedAtTimestamp: Date.now() } : { value: data, createdAtTimestamp: Date.now(), updatedAtTimestamp: Date.now() }, this));
+            const object = Object.defineProperties(data, typeof data === "object" && !(data instanceof Array) ? ({
+                "id": {
+                    value: id,
+                    enumerable: true
+                },
+                "createdAtTimestamp": {
+                    value: Date.now(),
+                    enumerable: true
+                },
+                "updatedAtTimestamp": {
+                    value: Date.now(),
+                    enumerable: true
+                },
+            }) : ({
+                "id": {
+                    value: id,
+                    enumerable: true
+                },
+                "value": {
+                    value: data,
+                    enumerable: true
+                },
+                "createdAtTimestamp": {
+                    value: Date.now(),
+                    enumerable: true
+                },
+                "updatedAtTimestamp": {
+                    value: Date.now(),
+                    enumerable: true
+                },
+            }));
+            this[Cache].set(id, buildDocument(id, object, this));
         }
         (0, forceWriteFile_1.forceWriteFileSync)(this.path, KVString_1.KVString.toString(this.toJSON()));
         this.emit("create", this[Cache].get(id), this, id);

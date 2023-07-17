@@ -17,7 +17,7 @@ exports.encode = void 0;
  * ```
  */
 function encode(data, allowedTypes) {
-    const encoded = Object.fromEntries(Object.entries(data).map(([key, value]) => [key, (typeof value === "object" ? encode(value, allowedTypes) : value)]).filter(([key, value]) => (allowedTypes.includes(typeof value) || value instanceof Array)));
+    const encoded = Object.fromEntries(Object.entries(data).map(([key, value]) => [key, (typeof value === "object" && !!value && !(value instanceof Array) ? encode(value, allowedTypes) : value)]).filter(([key, value]) => (allowedTypes.includes(typeof value) || value instanceof Array)));
     Object.preventExtensions(encoded);
     return Object.freeze(encoded);
 }

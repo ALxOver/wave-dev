@@ -42,7 +42,10 @@ export interface BaseDocumentData {
 export interface Document<Data> extends BaseDocumentData {
     readonly model: JSONStorage<Data>;
     readonly save: () => void;
-    readonly toJSON: () => Data;
+    readonly toJSON: () => BaseDocumentData & {
+        readonly createdAtTimestamp: number;
+        updatedAtTimestamp: number;
+    } & Data;
     readonly delete: () => void;
     readonly createdAtTimestamp: number;
     updatedAtTimestamp: number;
