@@ -68,7 +68,7 @@ export declare class JSONStorage<Data> extends EventEmitter {
      * console.log(Fruits.getById("12345678912345678", true)) // { id: "12345678912345678", name: "Lemon", amount: 3 }
      * ```
      */
-    create(id: string, data: Data): DocType<Data>;
+    create(id: string, data: Omit<Data, "id">): DocType<Data>;
     /**
      * Update a document by its id.
      * @param {string} id The document id to update.
