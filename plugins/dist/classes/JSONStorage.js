@@ -11,24 +11,40 @@ const encode_1 = require("../functions/encode");
 const path_1 = require("path");
 const node_events_1 = require("node:events");
 function buildDocument(id, data, model) {
-    const doc = typeof data === "object" ?
-        { id, ...data, model, updatedAtTimestamp: Date.now() }
-        : { id, value: data, model, updatedAtTimestamp: Date.now() };
-    Object.defineProperties(doc, {
-        "toJSON": {
-            value: () => typeof data === "object" ? ((0, __1.omit)((0, encode_1.encode)(doc, ["boolean", "number", "object", "string"]), ["model"])) : { id, value: data }
-        },
-        "save": {
-            value: () => doc.model.save(doc)
-        },
-        "delete": {
-            value: () => model.delete(doc.id)
+    const doc = typeof data === "object"
+        ? {
+            id,
+            ...data,
+            model,
+            updatedAtTimestamp: Date.now(),
         }
+        : {
+            id,
+            value: data,
+            model,
+            updatedAtTimestamp: Date.now(),
+        };
+    Object.defineProperties(doc, {
+        toJSON: {
+            value: () => typeof data === "object"
+                ? (0, __1.omit)((0, encode_1.encode)(doc, ["boolean", "number", "object", "string"]), ["model"])
+                : { id, value: data },
+        },
+        save: {
+            value: () => doc.model.save(doc),
+        },
+        delete: {
+            value: () => model.delete(doc.id),
+        },
     });
     Object.preventExtensions(doc);
     const document = new Proxy(doc, {
         defineProperty(target, property, attributes) {
-            if (["updatedAtTimestamp", "updatedAtTimestamp", "id"].includes(property)) {
+            if ([
+                "updatedAtTimestamp",
+                "updatedAtTimestamp",
+                "id",
+            ].includes(property)) {
                 throw new TypeError(`Cannot manually set or change the value of ${property}`);
             }
             else {
@@ -46,8 +62,14 @@ class JSONStorage extends node_events_1.EventEmitter {
     constructor(path) {
         super();
         this.path = path;
-        this[Cache] = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc.id, doc, this)]));
-        this.collection = new collection_1.Collection(JSONStorage.parse(path).map(doc => [doc.id, buildDocument(doc.id, doc, this)]));
+        this[Cache] = new collection_1.Collection(JSONStorage.parse(path).map((doc) => [
+            doc.id,
+            buildDocument(doc.id, doc, this),
+        ]));
+        this.collection = new collection_1.Collection(JSONStorage.parse(path).map((doc) => [
+            doc.id,
+            buildDocument(doc.id, doc, this),
+        ]));
     }
     /**
      * Get a document by its id.
@@ -106,44 +128,45 @@ class JSONStorage extends node_events_1.EventEmitter {
             this[Cache].set(id, buildDocument(id, doc, this));
         }
         else {
-            const object = Object.defineProperties(data, typeof data === "object" && !(data instanceof Array) ? ({
-                "id": {
-                    value: id,
-                    enumerable: true
-                },
-                "createdAtTimestamp": {
-                    value: Date.now(),
-                    enumerable: true
-                },
-                "updatedAtTimestamp": {
-                    value: Date.now(),
-                    enumerable: true
-                },
-            }) : ({
-                "id": {
-                    value: id,
-                    enumerable: true
-                },
-                "value": {
-                    value: data,
-                    enumerable: true
-                },
-                "createdAtTimestamp": {
-                    value: Date.now(),
-                    enumerable: true
-                },
-                "updatedAtTimestamp": {
-                    value: Date.now(),
-                    enumerable: true
-                },
-            }));
+            const object = Object.defineProperties(data, typeof data === "object" && !(data instanceof Array)
+                ? {
+                    id: {
+                        value: id,
+                        enumerable: true,
+                    },
+                    createdAtTimestamp: {
+                        value: Date.now(),
+                        enumerable: true,
+                    },
+                    updatedAtTimestamp: {
+                        value: Date.now(),
+                        enumerable: true,
+                    },
+                }
+                : {
+                    id: {
+                        value: id,
+                        enumerable: true,
+                    },
+                    value: {
+                        value: data,
+                        enumerable: true,
+                    },
+                    createdAtTimestamp: {
+                        value: Date.now(),
+                        enumerable: true,
+                    },
+                    updatedAtTimestamp: {
+                        value: Date.now(),
+                        enumerable: true,
+                    },
+                });
             this[Cache].set(id, buildDocument(id, object, this));
         }
         (0, forceWriteFile_1.forceWriteFileSync)(this.path, KVString_1.KVString.toString(this.toJSON()));
         this.emit("create", this[Cache].get(id), this, id);
         return this[Cache].get(id);
     }
-    ;
     /**
      * Update a document by its id.
      * @param {string} id The document id to update.
@@ -155,7 +178,6 @@ class JSONStorage extends node_events_1.EventEmitter {
         (0, forceWriteFile_1.forceWriteFileSync)(this.path, KVString_1.KVString.toString(this.toJSON()));
         return this[Cache].get(id);
     }
-    ;
     /**
      * Update the JSON file with the specified collection data.
      */
@@ -174,7 +196,7 @@ class JSONStorage extends node_events_1.EventEmitter {
      * @returns {Data[]}
      */
     toJSON() {
-        return this[Cache].map(doc => doc.toJSON());
+        return this[Cache].map((doc) => doc.toJSON());
     }
     static parse(path) {
         if ((0, fs_1.existsSync)(path)) {

@@ -31,7 +31,7 @@ export declare class JSONStorage<Data> extends EventEmitter {
      * @param {string} id The document id.
      * @param {boolean} required If true, the return type wont be undefined.
      */
-    getById(id: string, required?: boolean): DocType<Data> & Document<Data> | undefined;
+    getById(id: string, required?: boolean): (DocType<Data> & Document<Data>) | undefined;
     /**
      * Delete a document.
      * @param {string} id The document id.
@@ -75,7 +75,7 @@ export declare class JSONStorage<Data> extends EventEmitter {
      * @param {Data} data The new document data.
      * @returns {Data}
      */
-    updateById(id: string, data: Data): DocType<Data>;
+    updateById(id: string, data: Omit<Data, "id">): DocType<Data>;
     /**
      * Update the JSON file with the specified collection data.
      */
