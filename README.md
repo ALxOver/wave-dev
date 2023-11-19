@@ -1,8 +1,8 @@
 <div align="center">
 	<br />
-	<p>
+<!-- 	<p>
 		<img src="https://raw.githubusercontent.com/ALxOver/wave-dev/main/resources/images/wave-background.png" width="280" alt="Wave background" />
-	</p>
+	</p> -->
 	<br />
 	<p>
 		<a href="https://github.com/ALxOver/wave-dev/tree/main"><img src="https://img.shields.io/badge/Repository-black?style=flat&logo=github&link=https%3A%2F%2Fgithub.com%2FALxOver%2Fwave-dev%2Ftree%2Fmain" alt="npm package" /></a>
@@ -12,10 +12,11 @@
 	</p>
 </div>
 
-## About
+<!-- ## About
 
 Wave is a **Discord Bot** which is being developed by me, Brayan Kook.
 In order to have an organized code, i've created this utilities to make it easier and decided to make it public so anyone can use them.
+ -->
 
 ## Packcages
 

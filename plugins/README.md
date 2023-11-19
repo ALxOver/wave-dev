@@ -1,9 +1,9 @@
 <div align="center">
 	<br />
-	<p>
+<!-- 	<p>
 		<img src="https://raw.githubusercontent.com/ALxOver/wave-dev/main/resources/images/wave-background.png" width="280" alt="Wave background" />
 	</p>
-	<br />
+	<br /> -->
 	<p>
 		<a href="https://github.com/ALxOver/wave-dev/tree/main"><img src="https://img.shields.io/badge/Repository-black?style=flat&logo=github&link=https%3A%2F%2Fgithub.com%2FALxOver%2Fwave-dev%2Ftree%2Fmain" alt="npm package" /></a>
 		<a href="https://github.com/ALxOver/wave-dev/tree/main"><img src="https://img.shields.io/github/contributors/ALxOver/wave-dev?logo=github&label=Contributors&color=black" alt="Github contributors" /></a>
@@ -11,11 +11,6 @@
 		<a href="https://www.npmjs.com/package/@wave-dev/plugins"><img src="https://img.shields.io/npm/l/%40wave-dev%2Fplugins?logo=npm" alt="License" /></a>
 	</p>
 </div>
-
-## About
-
-Wave is a **Discord Bot** which is being developed by me, Brayan Kook.
-In order to have an organized code, i've created this utilities to make it easier and decided to make it public so anyone can use them.
 
 ## Packcages
 
@@ -38,7 +33,7 @@ npm install @wave-dev/plugins
 
   ```ts
   // Creating it from the constructor:
-  import { KVString } from "kvstring";
+  import { KVString } from "@wave-dev/plugins";
   const myKVString = new KVString({
     // Setting the values with their keys
     values: [
@@ -52,7 +47,7 @@ npm install @wave-dev/plugins
 
   ```ts
   // Creating it by its methods
-  import { KVString } from "kvstring";
+  import { KVString } from "@wave-dev/plugins";
   const myKVString = new KVString();
   myKVString.setMaxLength(100);
   myKVString.addValue("name", "Sam");
@@ -72,14 +67,14 @@ npm install @wave-dev/plugins
 
 - **[StringBuilder](./typings/classes/StringBuilder.d.ts)** allows you to dynamicaly create an string.
   ```ts
-  import { StringBuilder } from "kvstring";
+  import { StringBuilder } from "@wave-dev/plugins";
   const content = new StringBuilder("Hummmm...");
   if (1 + 1 === 2) content.update("it's true!", ", ");
   console.log(content.toString()); // "Hummmm..., it's true!"
   ```
 - **[stringEquals](./typings/functions/stringEcuals.d.ts)** allows you to get the equality between two strings with additional options.
   ```ts
-  import { stringEquals } from "kvstring";
+  import { stringEquals } from "@wave-dev/plugins";
   stringEquals("Apple", "Apple"); // true
   stringEquals("My name is Jhon", "JHON", {
     allowCaseSensitive: true,
@@ -90,7 +85,7 @@ npm install @wave-dev/plugins
 
   ```ts
   // fruits.ts
-  import { JSONStorage, BaseDocumentData } from "kvstring";
+  import { JSONStorage, BaseDocumentData } from "@wave-dev/plugins";
   import { join } from "path";
   // Create an interface for the document data
   interface FruitData extends BaseDocumentData {
@@ -98,8 +93,11 @@ npm install @wave-dev/plugins
     amount: number;
   }
   // Create the dir and JSON file
-  const path = join(process.cwd(), "storage", "fruits.json");
-  const Fruits = JSONStorage.store<FruitData>(path);
+  const Fruits = new JSONStorage<FruitData>(
+    process.cwd(),
+    "storage",
+    "fruits.json"
+  );
   // Create the first document
   Fruits.create({ id: "12345678912345678", name: "Apple", amount: 1 });
   // Get the document by its id

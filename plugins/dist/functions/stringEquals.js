@@ -23,7 +23,6 @@ function stringEquals(a, b, options) {
             }));
         return false;
     }
-    ;
     if (options?.allowFalsy && !a && !b) {
         return true;
     }
@@ -32,7 +31,7 @@ function stringEquals(a, b, options) {
             if (log)
                 console.error(new EqualityError_1.TypeError({
                     message: `❎ ${typeof a !== "string" ? a : b} is not type of string.`,
-                    target: typeof a !== "string" ? a : b
+                    target: typeof a !== "string" ? a : b,
                 }));
             return false;
         }
@@ -44,31 +43,34 @@ function stringEquals(a, b, options) {
             if (options.allowIncludes === "second") {
                 if (b.includes(a))
                     return true;
-                console.error(new EqualityError_1.EqualityError({
-                    message: '❎ Both strings are different even with "second" includes option.',
-                    first: a,
-                    second: b,
-                }));
+                if (log)
+                    console.error(new EqualityError_1.EqualityError({
+                        message: '❎ Both strings are different even with "second" includes option.',
+                        first: a,
+                        second: b,
+                    }));
                 return false;
             }
             if (options.allowIncludes === "first") {
                 if (a.includes(b))
                     return true;
-                console.error(new EqualityError_1.EqualityError({
-                    message: '❎ Both strings are different even with "first" includes option.',
-                    first: a,
-                    second: b,
-                }));
+                if (log)
+                    console.error(new EqualityError_1.EqualityError({
+                        message: '❎ Both strings are different even with "first" includes option.',
+                        first: a,
+                        second: b,
+                    }));
                 return false;
             }
             if (options.allowIncludes === "both") {
                 if (a.includes(b) || b.includes(a))
                     return true;
-                console.error(new EqualityError_1.EqualityError({
-                    message: '❎ Both strings are different even with "both" includes option.',
-                    first: a,
-                    second: b,
-                }));
+                if (log)
+                    console.error(new EqualityError_1.EqualityError({
+                        message: '❎ Both strings are different even with "both" includes option.',
+                        first: a,
+                        second: b,
+                    }));
                 return false;
             }
         }

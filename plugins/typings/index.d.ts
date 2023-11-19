@@ -1,7 +1,6 @@
 import { JSONStorage } from "./classes/JSONStorage";
 export { forceWriteFileSync } from "./functions/forceWriteFile";
 export { omit } from "./functions/omit";
-export { JSONStorage } from "./classes/JSONStorage";
 export { encode } from "./functions/encode";
 export { stringEquals } from "./functions/stringEquals";
 export * from "./constants";
@@ -18,7 +17,7 @@ export type ArrayElementsTypes<ArrayType extends readonly unknown[] | undefined>
  * Get all object keys which instances match with the validation.
  */
 export type FilterKeyTypes<O extends object, VT> = {
-    [P in keyof O]: VT extends string ? (O[P] extends string ? P : never) : VT extends number ? (O[P] extends number ? P : never) : VT extends boolean ? (O[P] extends boolean ? P : never) : VT extends array ? (O[P] extends array ? P : never) : VT extends object ? (O[P] extends object ? P : never) : never;
+    [P in keyof O]: VT extends string ? O[P] extends string ? P : never : VT extends number ? O[P] extends number ? P : never : VT extends boolean ? O[P] extends boolean ? P : never : VT extends array ? O[P] extends array ? P : never : VT extends object ? O[P] extends object ? P : never : never;
 }[keyof O];
 /**
  * Get all object keys which instances match with the validation.
