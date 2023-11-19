@@ -1,6 +1,6 @@
 {
   "name": "@wave-dev/plugins",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "description": "Useful development plugins.",
   "main": "dist/index.js",
   "typings": "typings/index.d.ts",
@@ -16,7 +16,8 @@
   "author": "Brayan Kook",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ALxOver/wave-dev/tree/main/plugins"
+    "url": "https://github.com/ALxOver/wave-dev.git",
+    "directory": "plugins"
   },
   "license": "Apache-2.0",
   "keywords": [
