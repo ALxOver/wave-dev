@@ -26,7 +26,7 @@ npm install @wave-dev/plugins
 
 ## List of available plugins
 
-- **[KVString](../plugins/typings/classes/KVString.d.ts)** allows you to store data by **(key:value)** pairs in a single string and format it interpreting it as different data types as well.
+- **[KVString](typings/classes/KVString.d.ts)** allows you to store data by **(key:value)** pairs in a single string and format it interpreting it as different data types as well.
   This was powered by **Discord Bot Development**.
   In order to avoid databases and collection for **storing short data**, i use strings to do it in the **[Message Component Custom ID](https://discord.com/developers/docs/interactions/message-components#custom-id)**
   So whenever i need to store the target of an interaction or command, page or any other data, this is a strong way to do it because **it will be exiting forever until the message/component get deleted**.
@@ -65,14 +65,14 @@ npm install @wave-dev/plugins
   console.log(parseInt(age)); // 20
   ```
 
-- **[StringBuilder](../plugins/typings/classes/StringBuilder.d.ts)** allows you to dynamicaly create an string.
+- **[StringBuilder](typings/classes/StringBuilder.d.ts)** allows you to dynamicaly create an string.
   ```ts
   import { StringBuilder } from "@wave-dev/plugins";
   const content = new StringBuilder("Hummmm...");
   if (1 + 1 === 2) content.update("it's true!", ", ");
   console.log(content.toString()); // "Hummmm..., it's true!"
   ```
-- **[stringEquals](../plugins/typings/functions/stringEcuals.d.ts)** allows you to get the equality between two strings with additional options.
+- **[stringEquals](typings/functions/stringEcuals.d.ts)** allows you to get the equality between two strings with additional options.
   ```ts
   import { stringEquals } from "@wave-dev/plugins";
   stringEquals("Apple", "Apple"); // true
@@ -81,7 +81,7 @@ npm install @wave-dev/plugins
     allowIncludes: "booth",
   }); // true
   ```
-- **[JSONStorage](../plugins/typings/classes/JSONStorage.d.ts)** allows you to store JSON data in JSON files like a local Database
+- **[JSONStorage](typings/classes/JSONStorage.d.ts)** allows you to store JSON data in JSON files like a local Database
 
   ```ts
   // fruits.ts
