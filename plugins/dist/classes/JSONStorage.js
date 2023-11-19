@@ -18,15 +18,30 @@ class JSONDocument {
             Reflect.set(this, prop, data[prop]);
         }
     }
+    /**
+     * Edits the document.
+     * @param {Data} data The new data.
+     */
     edit(data) {
-        this.manager.create({ id: this.id, ...data });
+        this.manager.create({
+            id: this.id,
+            ...data,
+            updatedAtTimestamp: Date.now(),
+        });
     }
+    /**
+     * Save the document.
+     */
     save() {
         this.manager.create({
             id: this.id,
+            updatedAtTimestamp: Date.now(),
             ...this.toStorage(),
         });
     }
+    /**
+     * Delete the document
+     */
     delete() {
         this.manager.delete(this.id);
     }
@@ -65,6 +80,11 @@ class JSONStorage {
             JSONDoc(doc, this),
         ]));
     }
+    /**
+     * Create a new document.
+     * @param {Data & { id: string }} data The document data
+     * @returns {JSONDocument<Data> & Data}
+     */
     create(data) {
         this.cache.set(data.id, JSONDoc(data, this));
         this.update();
@@ -76,14 +96,22 @@ class JSONStorage {
             throw new Error(`Unable to get data with the id (${id})`);
         return data;
     }
+    /**
+     * Delete a document by its id.
+     * @param id The document id.
+     */
     delete(id) {
         this.cache.delete(id);
         this.update();
     }
+    /**
+     * Update the Storage manager.
+     */
     update() {
         (0, __1.forceWriteFileSync)(this.path, JSON.stringify(this.toJSON()));
     }
     toJSON() {
+        //@ts-ignore
         return this.cache.map((doc) => doc.toStorage());
     }
     static validatePath(path) {
