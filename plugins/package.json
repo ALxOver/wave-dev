@@ -1,17 +1,17 @@
 {
   "name": "@wave-dev/plugins",
-  "version": "1.0.36",
+  "version": "1.0.38",
   "description": "Useful development plugins.",
-  "main": "./dist/index.js",
-  "typings": "./typings/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "typings/index.d.ts",
   "files": [
     "dist",
     "typings"
   ],
   "scripts": {
-    "test": "node ./testing/index.js",
+    "test": "node testing/index.js",
     "build": "tsc",
-    "start": "node ./dist/index.js"
+    "start": "node dist/index.js"
   },
   "author": "Brayan Kook",
   "repository": {
