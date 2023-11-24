@@ -1,4 +1,6 @@
 import { JSONStorage } from "./classes/JSONStorage";
+export { JSONStorage } from "./classes/JSONStorage";
+export { PageBuilder } from "./classes/PageBuilder";
 export { forceWriteFileSync } from "./functions/forceWriteFile";
 export { omit } from "./functions/omit";
 export { encode } from "./functions/encode";

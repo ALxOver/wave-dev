@@ -1,6 +1,6 @@
 {
   "name": "@wave-dev/plugins",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Useful development plugins.",
   "main": "dist/index.js",
   "typings": "typings/index.d.ts",
@@ -26,11 +26,11 @@
     "discord",
     "collection"
   ],
-  "dependencies": {
-    "@discordjs/collection": "^1.5.1"
-  },
   "devDependencies": {
     "@types/node": "^20.4.1",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1"
   }
 }

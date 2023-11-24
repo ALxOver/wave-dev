@@ -81,7 +81,7 @@ npm install @wave-dev/plugins
     allowIncludes: "booth",
   }); // true
   ```
-- **[JSONStorage](./typings/classes/JSONStorage.d.ts)** allows you to store JSON data in JSON files like a local Database
+- **[JSONStorage](./typings/classes/JSONStorage.d.ts)** allows you to store JSON data in JSON files like a local Database.
 
   ```ts
   // fruits.ts
@@ -107,4 +107,21 @@ npm install @wave-dev/plugins
   fruit.amount++;
   fruit.save();
   console.log(Fruits.getById("12345678912345678", true)); // { id: "12345678912345678", name: "Lemon", amount: 3 }
+  ```
+
+- **[PageBuilder](./typings/classes/PageBuilder.d.ts)** allows you to create a pagination.
+  ```ts
+  import { PageBuilder } from "@wave-dev/plugins";
+  const fruits = [
+    { name: "Apple", amount: 1 },
+    { name: "Lemon", amount: 3 },
+    { name: "Melon", amount: 6 },
+  ];
+  const pagination = new PageBuilder<{ name: string; amount: number },
+    .addValues(...fruits)
+    .setLimit(1)
+    .setDisplayFormat((value) => `${value.name} x${value.amount}`)
+    .setSearchFormat((value) => `${value.name} x${value.amount} 👈`)
+    .setEmptyMessage("There aren't any fruits in this page")
+    .setUnfoundMessage("Unnable to find that fruit :c");
   ```
